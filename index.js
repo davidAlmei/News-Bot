@@ -1,18 +1,30 @@
-const { getAllNews } = require("./newsService");
+require("dotenv").config();
 
-const { formatMorningBrief } = require("./formatter");
+const { getNews } = require("./services/newsService");
+const { summarizeNews } = require("./services/geminiService");
+const { sendEmail } = require("./services/emailService");
 
-const { sendWhatsAppMessage } = require("./whatsappService");
+async function runBot() {
+  try {
+    const techNews = await getNews("technology");
+    const businessNews = await getNews("business");
 
-async function main() {
+    const allNews = `
+    TECHNOLOGY:
+    ${JSON.stringify(techNews)}
 
-  const news = await getAllNews();
+    BUSINESS:
+    ${JSON.stringify(businessNews)}
+    `;
 
-  const message = formatMorningBrief(news);
+    const summary = await summarizeNews(allNews);
 
-  console.log(message);
+    await sendEmail(summary);
 
-  await sendWhatsAppMessage(message);
+    console.log("Email sent successfully");
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-main();
+runBot();
