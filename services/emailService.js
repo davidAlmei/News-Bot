@@ -8,12 +8,12 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-async function sendEmail(content) {
+async function sendEmail(html) {
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: process.env.RECEIVER_EMAIL,
-    subject: "📰 Daily News Digest",
-    text: content,
+    subject: "📰 Daily Morning Brief",
+    html,
   });
 }
 

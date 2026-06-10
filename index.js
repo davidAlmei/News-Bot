@@ -1,27 +1,49 @@
 require("dotenv").config();
 
-const { getNews } = require("./services/newsService");
-const { summarizeNews } = require("./services/geminiService");
+const { getTopNews } = require("./services/newsService");
+const { generateDigest } = require("./services/geminiService");
 const { sendEmail } = require("./services/emailService");
+const {
+  generateNewsletter,
+} = require("./services/newsletterTemplate");
+
+function simplifyArticles(articles) {
+  return articles.map((article) => ({
+    title: article.title,
+    description: article.description,
+    url: article.url,
+  }));
+}
 
 async function runBot() {
   try {
-    const techNews = await getNews("technology");
-    const businessNews = await getNews("business");
+    console.log("Fetching news...");
 
-    const allNews = `
-    TECHNOLOGY:
-    ${JSON.stringify(techNews)}
+    const techNews = await getTopNews("technology");
+    const businessNews = await getTopNews("business");
+    const worldNews = await getTopNews("general");
 
-    BUSINESS:
-    ${JSON.stringify(businessNews)}
-    `;
+    const tech = simplifyArticles(techNews);
+    const business = simplifyArticles(businessNews);
+    const world = simplifyArticles(worldNews);
 
-    const summary = await summarizeNews(allNews);
+    console.log("Generating summaries...");
 
-    await sendEmail(summary);
+    const digest = await generateDigest(
+      tech,
+      business,
+      world
+    );
 
-    console.log("Email sent successfully");
+    console.log("Building newsletter...");
+
+    const html = generateNewsletter(digest);
+
+    console.log("Sending email...");
+
+    await sendEmail(html);
+
+    console.log("Email sent successfully.");
   } catch (err) {
     console.error(err);
   }
