@@ -9,10 +9,17 @@ const transporter = nodemailer.createTransport({
 });
 
 async function sendEmail(html) {
+
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   await transporter.sendMail({
     from: process.env.EMAIL_USER,
     to: process.env.RECEIVER_EMAIL,
-    subject: "📰 Daily Morning Brief",
+    subject: `📰 Morning Brief - ${today}`,
     html,
   });
 }
