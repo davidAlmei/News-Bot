@@ -8,7 +8,7 @@ async function getTopNews(category) {
         params: {
           category,
           language: "en",
-          pageSize: 5,
+          pageSize: 25,
           apiKey: process.env.NEWS_API_KEY,
         },
       }

@@ -6,52 +6,89 @@ const ai = new GoogleGenAI({
 
 async function generateDigest(tech, business, world) {
   const prompt = `
-Summarize these news articles.
+    You are an expert news editor creating a daily newsletter.
 
-Return ONLY valid JSON.
+    Return ONLY valid JSON.
 
-Format:
+    Format:
 
-{
-  "technology": [
-    {
-      "title": "...",
-      "summary": "...",
-      "url": "..."
-    }
-  ],
-  "business": [
-    {
-      "title": "...",
-      "summary": "...",
-      "url": "..."
-    }
-  ],
-  "world": [
-    {
-      "title": "...",
-      "summary": "...",
-      "url": "..."
-    }
-  ]
-}
+      {
+        "topStories": [
+          {
+            "title": "...",
+            "summary": "...",
+            "url": "..."
+          }
+        ],
 
-Rules:
-- Maximum 3 articles per category.
-- Summary should be under 25 words.
-- Preserve URLs exactly.
-- Return only JSON.
+        "technology": [
+          {
+            "title": "...",
+            "summary": "...",
+            "url": "..."
+          }
+        ],
 
-Technology:
-${JSON.stringify(tech)}
+        "business": [
+          {
+            "title": "...",
+            "summary": "...",
+            "url": "..."
+          }
+        ],
 
-Business:
-${JSON.stringify(business)}
+        "world": [
+          {
+            "title": "...",
+            "summary": "...",
+            "url": "..."
+          }
+        ]
+      }
 
-World:
-${JSON.stringify(world)}
-`;
+    Rules:
 
+    TOP STORIES:
+    - Select exaclty 3 most important stories from ALL articles.
+    - They may come from any category.
+    - Prioritize global impact, technological breakthroughs, major business events, wars, elections, diplomacy, and significant world events.
+    - These should represent the most important developments of the day.
+
+    TECHNOLOGY:
+    - Select exaclty 6 most important stories.
+    - Prioritize AI, cybersecurity, semiconductors, cloud computing, major product launches, startups, and big tech companies.
+    - Ignore clickbait and duplicate stories.
+
+    BUSINESS:
+    - Select exaclty 3 most important stories.
+    - Prioritize markets, earnings, investments, mergers, acquisitions, economic policy, and major business events.
+
+    WORLD:
+    - Select exaclty 3 most important stories.
+    - Prioritize geopolitics, wars, elections, diplomacy, major disasters, and globally significant events.
+
+    GENERAL:
+    - Summaries must be under 25 words.
+    - Preserve URLs exactly.
+    - Return only JSON.
+    - Do NOT invent information.
+    - Choose the most impactful stories, not the first stories.
+    - Top Stories must be different from category stories.
+    - Do not select duplicate stories.
+    - Do not select articles covering the same event twice.
+    - Do not select the same story in both Top Stories and category sections.
+    - Top Stories must be unique.
+    - Category stories must be unique.
+
+    Technology Articles:
+    ${JSON.stringify(tech)}
+
+    Business Articles:
+    ${JSON.stringify(business)}
+
+    World Articles:
+    ${JSON.stringify(world)}
+    `;
   let delay = 5000; // 5 seconds
 
   while (true) {

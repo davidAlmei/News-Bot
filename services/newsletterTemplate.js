@@ -1,6 +1,64 @@
+function generateTopStories(stories) {
+  return `
+    <div style="
+      background:#fff3cd;
+      border-left:6px solid #ff9800;
+      padding:20px;
+      border-radius:10px;
+      margin:25px 0;
+    ">
+
+      <h2 style="
+        margin-top:0;
+        color:#ff6f00;
+      ">
+        🔥 Top 3 Stories of the Day
+      </h2>
+
+      ${stories
+        .map(
+          story => `
+            <div style="
+              margin-bottom:20px;
+              padding-bottom:15px;
+              border-bottom:1px solid #ddd;
+            ">
+              <strong>${story.title}</strong>
+
+              <p style="
+                line-height:1.6;
+                margin:10px 0;
+              ">
+                ${story.summary}
+              </p>
+
+              <a
+                href="${story.url}"
+                style="
+                  color:#ff6f00;
+                  text-decoration:none;
+                  font-weight:bold;
+                "
+              >
+                Read More →
+              </a>
+            </div>
+          `
+        )
+        .join("")}
+
+    </div>
+  `;
+}
+
 function generateSection(title, articles) {
   return `
-    <h2>${title}</h2>
+    <h2 style="
+      margin-top:30px;
+      color:#1a73e8;
+    ">
+      ${title}
+    </h2>
 
     ${articles
       .map(
@@ -11,11 +69,29 @@ function generateSection(title, articles) {
           border-left:4px solid #1a73e8;
           background:#f8f9fa;
         ">
-          <strong>${article.title}</strong>
+          <strong style="
+            font-size:16px;
+            display:block;
+            margin-bottom:8px;
+          ">
+            ${article.title}
+          </strong>
 
-          <p>${article.summary}</p>
+          <p style="
+            line-height:1.6;
+            margin:10px 0;
+          ">
+            ${article.summary}
+          </p>
 
-          <a href="${article.url}">
+          <a
+            href="${article.url}"
+            style="
+              color:#1a73e8;
+              text-decoration:none;
+              font-weight:bold;
+            "
+          >
             Read More →
           </a>
         </div>
@@ -45,6 +121,8 @@ function generateNewsletter(data) {
     </div>
 
     <br>
+
+    ${generateTopStories(data.topStories)}
 
     ${generateSection("💻 Technology", data.technology)}
 
