@@ -16,5 +16,13 @@
     "dotenv": "^17.4.2",
     "node-cron": "^4.2.1",
     "nodemailer": "^8.0.10"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidAlmei/WhatsApp-News-Bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/davidAlmei/WhatsApp-News-Bot/issues"
+  },
+  "homepage": "https://github.com/davidAlmei/WhatsApp-News-Bot#readme"
 }
