@@ -1,8 +1,12 @@
 name: Daily News Bot
 
 on:
-  push:
+  schedule:
+    - cron: '*/15 * * * *'
+
   workflow_dispatch:
+
+  push:
 
 jobs:
   send-news:
